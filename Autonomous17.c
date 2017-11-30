@@ -1,17 +1,21 @@
 //autonomous code
 
-//
+//move the wheels forward or backward
+//wheelPower is how fast the robot goes, values -127 to 127 are acceptable
+	//if wheelPower is positive, robot goes forwards
+	//if wheelPower is negative, robot goes backwards
+//curve is how much the robot should turn tbt how the robot will use that value to turn though...
 task moveWheels(int wheelPower, int curve)
 {
 
 }
 
-//power is what direction and how fast to turn
+//turn in place
+//power is what direction and how fast to turn, values -127 to 127 are acceptable
 	//if power is a positive integer it goes clockwise
 	//if power is a negative integer it goes counterclockwise
 //time is how many seconds to run the code
-task turn(int wheelPower, int time)
-{
+task turn(int power){
 
 }
 
@@ -33,6 +37,7 @@ task liftMobileGoal()
 
 }
 
+//places the mobile goal in the pouch into the zone
 task placeMobileGoal()
 {
 
