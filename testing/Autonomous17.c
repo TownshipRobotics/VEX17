@@ -18,7 +18,7 @@ int rightMotorSpeed = 0;
 	//if wheelPower is positive, robot goes forwards
 	//if wheelPower is negative, robot goes backwards
 //curve is how much the robot should turn tbd how the robot will use that value to turn though...
-void moveWheels(int wheelPower, float curv, int moveTime)
+void moveWheels(int wheelPower, float curve, int moveTime)
 {
 	leftMotorSpeed = wheelPower*curve;
 	rightMotorSpeed = wheelPower*(1-curve);
