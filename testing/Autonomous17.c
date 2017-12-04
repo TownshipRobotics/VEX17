@@ -1,3 +1,11 @@
+//variables
+int leftMotorSpeed = 0;
+int rightMotorSpeed = 0;
+int leftFrontMotor = motor1;
+int rightFrontMotor = motor2;
+int leftBackMotor = motor3;
+int rightBackMotor = motor4;
+
 /***** MOVEMENT *****/
 
 //move the robot forward or backward
@@ -5,9 +13,11 @@
 	//if wheelPower is positive, robot goes forwards
 	//if wheelPower is negative, robot goes backwards
 //curve is how much the robot should turn tbt how the robot will use that value to turn though...
-void moveWheels(int wheelPower, int curve)
+void moveWheels(int wheelPower, float curve)
 {
-
+	leftMotorSpeed = wheelPower*curve;
+	rightMotorSpeed = wheelPower*(1-curve);
+	motor[
 }
 
 //turn in place
@@ -15,7 +25,7 @@ void moveWheels(int wheelPower, int curve)
 	//if power is a positive integer it goes clockwise
 	//if power is a negative integer it goes counterclockwise
 //time is how many seconds to run the code
-void turn(int power){
+void turn(int power, int time){
 
 }
 
@@ -61,8 +71,11 @@ void closeClaw()
 task main()
 {
 	//turn clockwise
-
+		//45 degrees i think
+	turn(50, 3);
+	
 	//pick up cone
+	
 	//drive clockwise forward
 	//drive backwards
 	//pick up mobile goal
