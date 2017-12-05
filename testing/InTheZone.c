@@ -85,6 +85,14 @@ task main()
 	while(true){
 		moveWheels();
 		updateClaw();
+		if(Btn5U == 1){
+			motor[armLeft] = 50;
+			motor[armRight] = -50;
+		}else {}
+		if(Btn5D == 1){
+			motor[armLeft] = -50;
+			motor[armRight]= 50;
+		}else {}
 	}
 
 
