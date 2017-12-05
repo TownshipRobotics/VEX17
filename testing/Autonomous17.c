@@ -44,20 +44,11 @@ void turn(int power)
 	else
 	{
 		return;
-	}	
-}
-
-//lifts up a yellow cone in its claw and holds it mid air
-void liftCone()
-{
-	closeCLaw();
-	motor[armMotor] = 50;
-	sleep(1500);
-	motor[armMotor] = 0;
+	}
 }
 
 //places the cone the robot is holding midair on the mobile goal in the pouch
-void placeOnMobileGoal()
+void coneOnMobileGoal()
 {
 
 }
@@ -90,6 +81,15 @@ void closeClaw()
 	motor[claw] = -35;
 	sleep(500);
 	motor[claw] = 0;
+}
+
+//lifts up a yellow cone in its claw and holds it mid air
+void liftCone()
+{
+	closeClaw();
+	motor[armMotor] = 50;
+	sleep(1500);
+	motor[armMotor] = 0;
 }
 
 /***** AUTONOMOUS *****/

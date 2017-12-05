@@ -11,6 +11,9 @@ float leftBackWheel = motor3;
 float rightBackWheel = motor4;
 
 void moveWheels(){
+	if((vexRT[ChC] == 0) && (vexRT[ChD] == 0)){
+		return;
+	}
 	//last year, we used the right joystick to drive the wheels
 	//left wheel = motor 1
 	//right wheel = motor 2
@@ -29,7 +32,7 @@ void moveWheels(){
 		leftMotorSpeed = (1-percentage)*calculatedPower;
 	}
 	//if ch4 < 0
-	if(vexRT[ChD]<0){
+	else if(vexRT[ChD]<0){
 		//left motor speed = ((ch4Value/254)+.5)*(calculated power)
 		leftMotorSpeed = percentage*calculatedPower;
 		//right motor speed = 1-(left motor speed)
@@ -37,8 +40,8 @@ void moveWheels(){
 	}
 	//else
 	else{
-		//return
-		return;
+		leftMotorSpeed = 0.5*calculatedPower;
+		rightMotorSpeed = 0.5*calculatedPower;
 	}
 	//left motor go
 	motor[leftFrontWheel] = leftMotorSpeed;
