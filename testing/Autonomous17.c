@@ -6,7 +6,12 @@ int rightFrontMotor = motor2;
 int leftBackMotor = motor3;
 int rightBackMotor = motor4;
 int claw = motor5;
-int armMotor = motor6;
+int armLeftMotor = motor6;
+int armRightMotor = motor11;
+int pouchBackLeftMotor = motor7;
+int pouchFrontLeftMotor = motor8;
+int pouchBackRightMotor = motor9;
+int pouchFrontRightMotor = motor10;
 
 /***** MOVEMENT *****/
 
@@ -41,16 +46,6 @@ void turn(int power)
 		rightFrontMotor = power;
 		rightBackMotor = power;
 	}
-	else
-	{
-		return;
-	}
-}
-
-//places the cone the robot is holding midair on the mobile goal in the pouch
-void coneOnMobileGoal()
-{
-
 }
 
 //lifts the mobile goal behind it and places it into the pouch
@@ -60,7 +55,7 @@ void liftMobileGoal()
 }
 
 //places the mobile goal in the pouch into the zone
-void placeMobileGoal()
+void lowerMobileGoal()
 {
 
 }
@@ -87,9 +82,22 @@ void closeClaw()
 void liftCone()
 {
 	closeClaw();
-	motor[armMotor] = 50;
+	motor[armLeftMotor] = -50;
+	motor[armRightMotor] = 50;
+	//wait 1.5 seconds
 	sleep(1500);
-	motor[armMotor] = 0;
+	//stop motors
+	motor[armLeftMotor] = 0;
+	motor[armRightMotor] = 0;
+}
+
+//places the cone the robot is holding midair on the mobile goal in the pouch
+void coneOnMobileGoal()
+{
+	//move arm motors until cone on goal
+
+	//let go of cone
+	openClaw();
 }
 
 /***** AUTONOMOUS *****/

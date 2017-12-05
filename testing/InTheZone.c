@@ -5,10 +5,10 @@ int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
 //i guess percentage variables aren't necessary
 float percentage = 0.0;
-float leftFrontWheel = motor1;
-float rightFrontWheel = motor2;
-float leftBackWheel = motor3;
-float rightBackWheel = motor4;
+float leftFrontWheel = motor2;
+float rightFrontWheel = motor3;
+float leftBackWheel = motor4;
+float rightBackWheel = motor5;
 
 void moveWheels(){
 	if((vexRT[ChC] == 0) && (vexRT[ChD] == 0)){
@@ -22,7 +22,7 @@ void moveWheels(){
 	//if you were to face the same direction the robot is, left wheel moves -1*(calculated power) and right wheel moves the calculated power
 	//to turn, make the power go to the motors at a percentage
 	//percentage calculation is probably (ch4Value/254)+.5
-		//254 is the denominator because it is the max motor speed, 127, times 2
+	//254 is the denominator because it is the max motor speed, 127, times 2
 	percentage = vexRT[ChD]/254+.5;
 	//if ch4 > 0
 	if(vexRT[ChD]>0){
@@ -51,6 +51,10 @@ void moveWheels(){
 	motor[rightBackWheel] = rightMotorSpeed;
 }
 
+//claw - 6U opens
+// 6D close
+//arm - 5U raises up
+// 5D lowers
 //make sure main() is the last "task", weird C mechanic
 task main()
 {
