@@ -15,10 +15,10 @@ int rightMotorSpeed = 0;
 float percentage = 0.0;
 
 void moveWheels(){
-	motor[leftFrontWheel] = -vexRT[Ch3];
-	motor[leftBackWheel] = -vexRT[Ch3];
-	motor[rightFrontWheel] = vexRT[Ch1];
-	motor[rightBackWheel] = vexRT[Ch1];
+	motor[leftFrontWheel] = .5*vexRT[Ch3];
+	motor[leftBackWheel] = .5*vexRT[Ch3];
+	motor[rightFrontWheel] = .5*-vexRT[Ch2];
+	motor[rightBackWheel] = .5*-vexRT[Ch2];
 }
 
 void updateClaw()
@@ -35,13 +35,13 @@ void updateClaw()
 void updateArm(){
 	if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
-		motor[armLeft] = 50;
-		motor[armRight] = -50;
+		motor[armLeft] = -50;
+		motor[armRight] = 50;
 	}
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft] = -50;
-		motor[armRight] = 50;
+		motor[armLeft] = -5;
+		motor[armRight] = 5;
 	}
 	else
 	{
