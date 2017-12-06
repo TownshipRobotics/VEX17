@@ -40,13 +40,13 @@ void updateArm(){
 	}
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft] = -5;
-		motor[armRight] = 5;
+		motor[armLeft] = -20;
+		motor[armRight] = 20;
 	}
 	else
 	{
-		motor[armLeft] = 0;
-		motor[armRight] = 0;
+		motor[armLeft] = -30;
+		motor[armRight] = 30;
 	}
 }
 
