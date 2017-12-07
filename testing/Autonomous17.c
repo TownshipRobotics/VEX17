@@ -57,14 +57,14 @@ void turn(int power)
 	}
 }
 
-//lifts the mobile goal behind it and places it into the pouch
-void liftMobileGoal()
+//lowers mobile goal lift and moves back to get lift under mobile goal
+void lowerMobileGoal()
 {
 
 }
 
-//places the mobile goal in the pouch into the zone
-void lowerMobileGoal()
+//lifts the mobile goal behind it and places it into the pouch
+void liftMobileGoal()
 {
 
 }
@@ -120,10 +120,9 @@ task main()
 	//pick up cone
 	//drive clockwise forward
 	//drive backwards
-		//until bumper sensor hits mobile goal
+		//until bumper sensor hits mobile goal(then have robot move forward a little and lower the mobile goal lift, and move forward to pick up mobile goal)
 	//pick up mobile goal
 	//place cone on mobile goal
-	//turn clockwise in an arc until you reach the 10 point zone
+	//turn clockwise in an arc until you reach the 10 point zone ( set one motor to a higher speed than the other)
 	//wait for driver phase
-
 }
