@@ -9,7 +9,9 @@
 
 //declare variables below
 //doubles don't exist in RobotC apparently, there is only floats
-float calculatedPower = 0;
+
+//Dont think these are needed
+float calculatedPower = 0.0;
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
 float percentage = 0.0;
@@ -40,7 +42,7 @@ void updateArm(){
 	}
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft] = 9;
+		motor[armLeft] = -9;//forgot negative
 		motor[armRight] = 9;
 	}
 	else
