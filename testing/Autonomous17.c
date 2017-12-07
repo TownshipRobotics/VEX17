@@ -109,6 +109,25 @@ void coneOnMobileGoal()
 	openClaw();
 }
 
+//old algorithm
+	//start with closing claw to unfold it?
+	//closeClaw();
+	//turn clockwise
+		//45 degrees i think
+	//turn(50);
+	//sleep(250);
+	//stopMotors();
+		//move forward until you can grab cone
+		//stop
+	//pick up cone
+	//drive clockwise forward
+	//drive backwards
+		//until bumper sensor hits mobile goal
+	//pick up mobile goal
+	//place cone on mobile goal
+	//turn clockwise in an arc until you reach the 10 point zone
+	//wait for driver phase
+
 /***** AUTONOMOUS *****/
 task main()
 {
