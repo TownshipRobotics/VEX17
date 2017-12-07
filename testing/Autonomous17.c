@@ -29,10 +29,10 @@ int rightMotorSpeed = 0;
 	//if wheelPower is positive, robot goes forwards
 	//if wheelPower is negative, robot goes backwards
 //curve is how much the robot should turn tbd how the robot will use that value to turn though...
-void moveWheels(int wheelPower, float curve, int moveTime)
+void moveWheels(int wheelPower, float curve)
 {
-	leftMotorSpeed = -wheelPower*curve;
-	rightMotorSpeed = wheelPower*(1-curve);
+	leftMotorSpeed = -wheelPower;
+	rightMotorSpeed = wheelPower*curve;
 	motor[leftFrontMotor] = leftMotorSpeed;
 	motor[leftBackMotor] = leftMotorSpeed;
 	motor[rightFrontMotor] = rightMotorSpeed;
@@ -49,12 +49,24 @@ void turn(int power)
 	{
 		motor[leftFrontMotor] = power;
 		motor[leftBackMotor] = power;
+		motor[rightFrontMotor] = -power;
+		motor[rightBackMotor] = -power;
 	}
 	else if(power<0)
 	{
+		motor[leftFrontMotor] = -power;
+		motor[leftBackMotor] = -power;
 		motor[rightFrontMotor] = power;
 		motor[rightBackMotor] = power;
 	}
+}
+
+void stopWheels()
+{
+	motor[leftFrontMotor] = 0;
+	motor[leftBackMotor] = 0;
+	motor[rightFrontMotor] = 0;
+	motor[rightBackMotor] = 0;
 }
 
 //lifts the mobile goal behind it and places it into the pouch
@@ -93,8 +105,8 @@ void liftCone()
 	closeClaw();
 	motor[armLeft] = -50;
 	motor[armRight] = 50;
-	//wait 1.5 seconds
-	sleep(1500);
+	//wait 1 second
+	sleep(1000);
 	//stop motors
 	motor[armLeft] = 0;
 	motor[armRight] = 0;
@@ -109,12 +121,35 @@ void coneOnMobileGoal()
 	openClaw();
 }
 
+//old algorithm
+	//start with closing claw to unfold it?
+	//closeClaw();
+	//turn clockwise
+		//45 degrees i think
+	//turn(50);
+	//sleep(250);
+	//stopMotors();
+		//move forward until you can grab cone
+		//stop
+	//pick up cone
+	//drive clockwise forward
+	//drive backwards
+		//until bumper sensor hits mobile goal
+	//pick up mobile goal
+	//place cone on mobile goal
+	//turn clockwise in an arc until you reach the 10 point zone
+	//wait for driver phase
+
 /***** AUTONOMOUS *****/
 task main()
 {
+	//start with closing claw to unfold it?
+	closeClaw();
 	//turn clockwise
 		//45 degrees i think
 	turn(50);
+	sleep(250);
+	stopMotors();
 		//move forward until you can grab cone
 		//stop
 	//pick up cone
