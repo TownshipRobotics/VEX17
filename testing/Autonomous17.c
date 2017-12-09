@@ -112,9 +112,36 @@ void coneOnMobileGoal()
 /***** AUTONOMOUS *****/
 task main()
 {
+	//new algorithm
+	//if left
+		//turn 45 degrees? left
+		//go straight until you reach white line
+		//turn 20 degrees? right
+		//close claw
+		//open claw
+		//pick up cone
+		//turn back 20 degrees left (or however much you turned before)
+		//move forward until you reach colored square where mobile goal is
+		//place cone on mobile goal
+		//open claw
+		//maybe ready robot for driver phase
+	//else 
+		//turn 45 degrees? right
+		//go straight until you reach white line
+		//turn 20 degrees? left
+		//close claw
+		//open claw
+		//pick up cone
+		//turn back 20 degrees right (or however much you turned before)
+		//move forward until you reach colored square where mobile goal is
+		//place cone on mobile goal
+		//open claw
+		//maybe ready robot for driver phase
+
+	//og algotithm
 	//turn clockwise
 		//45 degrees i think
-	turn(50);
+	//turn(50);
 		//move forward until you can grab cone
 		//stop
 	//pick up cone
