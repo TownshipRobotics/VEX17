@@ -107,7 +107,11 @@ void liftCone()
 void coneOnMobileGoal()
 {
 	//move arm motors until cone on goal
-
+	motor[armLeft] = 50;
+	motor[armRight] = -50;
+	sleep(750);	//wait .75 seconds
+	motor[armLeft] = 0;
+	motor[armRight] = 0;
 	//let go of cone
 	openClaw();
 }
