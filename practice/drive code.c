@@ -13,33 +13,41 @@
 
 
 void moveWheels(){
-	motor[leftFrontWheel] = .25*vexRT[Ch3];
-	motor[leftBackWheel] = .25*vexRT[Ch3];
-	motor[rightFrontWheel] = .25*-vexRT[Ch2];
-	motor[rightBackWheel] = .25*-vexRT[Ch2];
+	motor[leftFrontWheel] = .5*vexRT[Ch3];
+	motor[leftBackWheel] = .5*vexRT[Ch3];
+	motor[rightFrontWheel] = .5*-vexRT[Ch2];
+	motor[rightBackWheel] = .5*-vexRT[Ch2];
 }
 
+//opens or closes claw
+	//if 6U is pressed, it opens
+	//if 6D is pressed, it closes
 void updateClaw()
 {
     if(vexRT[Btn6U] == 1) // If upper Z button down
-        motor[claw] = 35;
+        motor[claw] = 25;
     else if(vexRT[Btn6D] == 1) // If lower Z button down
-        motor[claw] = -35;
+        motor[claw] = -25;
     else
     	motor[claw] = 0;
 }
 
 //raises, lowers, or stops moving the arm depending if button 5U, 5D, or neither are pressed
-void updateArm(){
+void updateArm()
+{
+	int power = 0;
+
 	if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
-		motor[armLeft] = -50;
-		motor[armRight] = 50;
+		power += 60;
+		motor[armLeft] = -50-power;
+		motor[armRight] = 50+power;
 	}
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft] = -6;//forgot negative
-		motor[armRight] = 6;
+		power += 1;
+		motor[armLeft] = -6-power;
+		motor[armRight] = 6+power;
 	}
 	else
 	{
@@ -48,27 +56,28 @@ void updateArm(){
 	}
 }
 
+
 //method to raise arm but can't do anything else until it stops moving
 //supposed to be used with if(vexRT[Btn5U] == 1)
 //just here in case updateArm doesn't work out
-void raiseArm(){
-	motor[armLeft] = 50;
-	motor[armRight] = -50;
-	waitUntil(vexRT[Btn5U] == 0);
-	motor[armLeft] = 0;
-	motor[armRight] = 0;
-}
+//void raiseArm(){
+//	motor[armLeft] = 50;
+//	motor[armRight] = -50;
+//	waitUntil(vexRT[Btn5U] == 0);
+//	motor[armLeft] = 0;
+//	motor[armRight] = 0;
+//}
 
 //method to lower arm but can't do anything else until it stops moving
 //supposed to be used with if(vexRT[Btn5D] == 1)
 //just here in case updateArm doesn't work out
-void lowerArm(){
-	motor[armLeft] = -50;
-	motor[armRight] = 50;
-	waitUntil(vexRT[Btn5D] == 0);
-	motor[armLeft] = 0;
-	motor[armRight] = 0;
-}
+//void lowerArm(){
+//	motor[armLeft] = -50;
+//	motor[armRight] = 50;
+//	waitUntil(vexRT[Btn5D] == 0);
+//	motor[armLeft] = 0;
+//	motor[armRight] = 0;
+//}
 
 //claw - 6U opens
 // 6D close
