@@ -125,11 +125,11 @@ task main()
 		stopWheels();
 		//go straight until you reach white line
 		moveWheels(50);
-		//until you reach white line
+		waitUntil(SensorValue(lineTracker) < 1000);
 		stopWheels();
 		//turn 20 degrees? right
 		turn(30);
-		sleep(75);
+		sleep(70);
 		stopWheels();
 		//close claw
 		closeClaw();
@@ -139,11 +139,11 @@ task main()
 		liftCone();
 		//turn back 20 degrees left (or however much you turned before)
 		turn(-30);
-		sleep(75);
+		sleep(70);
 		stopWheels();
 		//move forward until you reach colored square where mobile goal is
 		moveWheels(50);
-		//until you reach colored square
+		waitUntil(SensorValue(lineTracker) < 1500);
 		stopWheels();
 		//place cone on mobile goal
 		coneOnMobileGoal();
@@ -153,15 +153,33 @@ task main()
 	else
 	{
 		//turn 45 degrees? right
+		turn(30);
+		sleep(150);
+		stopWheels();
 		//go straight until you reach white line
+		moveWheels(50);
+		waitUntil(SensorValue(lineTracker) < 1500);
+		stopWheels();
 		//turn 20 degrees? left
+		turn(-30);
+		sleep(70);
+		stopWheels();
 		//close claw
+		closeClaw();
 		//open claw
+		openClaw();
 		//pick up cone
+		liftCone();
 		//turn back 20 degrees right (or however much you turned before)
+		turn(30);
+		sleep(70);
+		stopWheels();
 		//move forward until you reach colored square where mobile goal is
+		moveWheels(50);
+		waitUntil(SensorValue(lineTracker) < 1500);
+		stopWheels();
 		//place cone on mobile goal
-		//open claw
+		coneOnMobileGoal();
 		//maybe ready robot for driver phase
 	}
 
