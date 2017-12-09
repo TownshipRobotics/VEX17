@@ -13,10 +13,10 @@
 
 
 void moveWheels(){
-	motor[leftFrontWheel] = .5*vexRT[Ch3];
-	motor[leftBackWheel] = .5*vexRT[Ch3];
-	motor[rightFrontWheel] = .5*-vexRT[Ch2];
-	motor[rightBackWheel] = .5*-vexRT[Ch2];
+	motor[leftFrontWheel] = .25*vexRT[Ch3];
+	motor[leftBackWheel] = .25*vexRT[Ch3];
+	motor[rightFrontWheel] = .25*-vexRT[Ch2];
+	motor[rightBackWheel] = .25*-vexRT[Ch2];
 }
 
 void updateClaw()
@@ -38,8 +38,8 @@ void updateArm(){
 	}
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft] = -9;//forgot negative
-		motor[armRight] = 9;
+		motor[armLeft] = -6;//forgot negative
+		motor[armRight] = 6;
 	}
 	else
 	{

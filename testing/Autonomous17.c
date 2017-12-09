@@ -21,6 +21,7 @@ int rightMotorSpeed = 0;
 //int pouchFrontLeftMotor = motor8;
 //int pouchBackRightMotor = motor9;
 //int pouchFrontRightMotor = motor10;
+boolean left = true;
 
 /***** MOVEMENT *****/
 
@@ -29,10 +30,10 @@ int rightMotorSpeed = 0;
 	//if wheelPower is positive, robot goes forwards
 	//if wheelPower is negative, robot goes backwards
 //curve is how much the robot should turn tbd how the robot will use that value to turn though...
-void moveWheels(int wheelPower, float curve, int moveTime)
+void moveWheels(int wheelPower)
 {
-	leftMotorSpeed = -wheelPower*curve;
-	rightMotorSpeed = wheelPower*(1-curve);
+	leftMotorSpeed = -wheelPower;
+	rightMotorSpeed = wheelPower;
 	motor[leftFrontMotor] = leftMotorSpeed;
 	motor[leftBackMotor] = leftMotorSpeed;
 	motor[rightFrontMotor] = rightMotorSpeed;
@@ -45,16 +46,18 @@ void moveWheels(int wheelPower, float curve, int moveTime)
 	//if power is a negative integer it goes counterclockwise
 void turn(int power)
 {
-	if(power>0)
-	{
-		motor[leftFrontMotor] = power;
-		motor[leftBackMotor] = power;
-	}
-	else if(power<0)
-	{
-		motor[rightFrontMotor] = power;
-		motor[rightBackMotor] = power;
-	}
+	motor[leftFrontMotor] = -power;
+	motor[leftBackMotor] = -power;
+	motor[rightFrontMotor] = -power;
+	motor[rightBackMotor] = -power;
+}
+
+//stops wheel motors so robot stops moving
+void stopWheels(){
+	motor[leftFrontMotor] = 0;
+	motor[leftBackMotor] = 0;
+	motor[rightFrontMotor] = 0;
+	motor[rightBackMotor] = 0;
 }
 
 //lowers mobile goal lift and moves back to get lift under mobile goal
@@ -93,8 +96,8 @@ void liftCone()
 	closeClaw();
 	motor[armLeft] = -50;
 	motor[armRight] = 50;
-	//wait 1.5 seconds
-	sleep(1500);
+	//wait 1 second
+	sleep(1000);
 	//stop motors
 	motor[armLeft] = 0;
 	motor[armRight] = 0;
@@ -114,18 +117,41 @@ task main()
 {
 	//new algorithm
 	//if left
+	if(left)
+	{
 		//turn 45 degrees? left
+		turn(-30);
+		sleep(150);
+		stopWheels();
 		//go straight until you reach white line
+		moveWheels(50);
+		//until you reach white line
+		stopWheels();
 		//turn 20 degrees? right
+		turn(30);
+		sleep(75);
+		stopWheels();
 		//close claw
+		closeClaw();
 		//open claw
+		openClaw();
 		//pick up cone
+		liftCone();
 		//turn back 20 degrees left (or however much you turned before)
+		turn(-30);
+		sleep(75);
+		stopWheels();
 		//move forward until you reach colored square where mobile goal is
+		moveWheels(50);
+		//until you reach colored square
+		stopWheels();
 		//place cone on mobile goal
-		//open claw
+		coneOnMobileGoal();
 		//maybe ready robot for driver phase
+	}
 	//else 
+	else
+	{
 		//turn 45 degrees? right
 		//go straight until you reach white line
 		//turn 20 degrees? left
@@ -137,6 +163,7 @@ task main()
 		//place cone on mobile goal
 		//open claw
 		//maybe ready robot for driver phase
+	}
 
 	//og algotithm
 	//turn clockwise
