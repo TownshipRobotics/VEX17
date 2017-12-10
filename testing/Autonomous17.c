@@ -1,3 +1,4 @@
+#pragma config(Sensor, in2,    lineTracker,    sensorLineFollower)
 #pragma config(Motor,  port2,           leftFrontMotor, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightFrontMotor, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           leftBackMotor, tmotorVex393_MC29, openLoop)
@@ -21,7 +22,7 @@ int rightMotorSpeed = 0;
 //int pouchFrontLeftMotor = motor8;
 //int pouchBackRightMotor = motor9;
 //int pouchFrontRightMotor = motor10;
-boolean left = true;
+bool left = true;
 
 /***** MOVEMENT *****/
 
@@ -61,16 +62,16 @@ void stopWheels(){
 }
 
 //lowers mobile goal lift and moves back to get lift under mobile goal
-void lowerMobileGoal()
-{
+//void lowerMobileGoal()
+//{
 
-}
+//}
 
 //lifts the mobile goal behind it and places it into the pouch
-void liftMobileGoal()
-{
+//void liftMobileGoal()
+//{
 
-}
+//}
 
 //opens the claw that will pick up the cones we will place on the mobile goal
 //since it is the same claw as last year, for convenience I will use the same code once I get the chance
@@ -153,7 +154,7 @@ task main()
 		coneOnMobileGoal();
 		//maybe ready robot for driver phase
 	}
-	//else 
+	//else
 	else
 	{
 		//turn 45 degrees? right
