@@ -1,11 +1,23 @@
-1. ***mobile goal lift
-2. ***sensor package
-3. arm extension for higher stacking
-4. automation of stacking process
-5. better claw grip
-6. ***potentiometer instead of hard stops
-7. autonomous programming in general
+(ordered in importance by lucas)
+
+1. mobile goal lift
+
+2. sensors
+
+3. 20 point zone
+
+4. better claw grip
+
+5. smooth controls + movement
+
+6. arm extension for higher stacking
+
+7. automation of stacking process
+
+8. potentiometer instead of hard stops
+
+9. autonomous programming in general
    + new autonomous plan
 	start w/ cone in claw, drop on mobile goal, carry mobile goal to 20 point zone
-8. smoother movement
-9. ***cooperate!! listen to each others' ideas :)
+
+also- new vex net chip
