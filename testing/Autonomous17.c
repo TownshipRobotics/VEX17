@@ -11,18 +11,7 @@
 //variables
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
-//int leftFrontMotor = motor1;
-//int rightFrontMotor = motor2;
-//int leftBackMotor = motor3;
-//int rightBackMotor = motor4;
-//int claw = motor5;
-//int armLeftMotor = motor6;
-//int armRightMotor = motor11;
-//int pouchBackLeftMotor = motor7;
-//int pouchFrontLeftMotor = motor8;
-//int pouchBackRightMotor = motor9;
-//int pouchFrontRightMotor = motor10;
-bool left = true;
+bool left = true;	//if robot is on the left side of the arena
 
 /***** MOVEMENT *****/
 
@@ -61,6 +50,8 @@ void stopWheels(){
 	motor[rightBackMotor] = 0;
 }
 
+//***** MOBILE GOAL *****
+
 //lowers mobile goal lift and moves back to get lift under mobile goal
 //void lowerMobileGoal()
 //{
@@ -72,6 +63,8 @@ void stopWheels(){
 //{
 
 //}
+
+//***** CLAW *****
 
 //opens the claw that will pick up the cones we will place on the mobile goal
 //since it is the same claw as last year, for convenience I will use the same code once I get the chance
@@ -91,12 +84,14 @@ void closeClaw()
 	motor[claw] = 0;
 }
 
+//***** ARM *****
+
 //lifts up a yellow cone in its claw and holds it mid air
 void liftCone()
 {
 	closeClaw();
-	motor[armLeft] = -50;
-	motor[armRight] = 50;
+	motor[armLeft] = -110;
+	motor[armRight] = 110;
 	//wait 1 second
 	sleep(1000);
 	//stop motors
@@ -108,8 +103,8 @@ void liftCone()
 void coneOnMobileGoal()
 {
 	//move arm motors until cone on goal
-	motor[armLeft] = 50;
-	motor[armRight] = -50;
+	motor[armLeft] = -8;
+	motor[armRight] = 7;
 	sleep(750);	//wait .75 seconds
 	motor[armLeft] = 0;
 	motor[armRight] = 0;
@@ -117,14 +112,12 @@ void coneOnMobileGoal()
 	openClaw();
 }
 
-/***** AUTONOMOUS *****/
-task main()
+//***** AUTONOMOUS MOVEMENT *****
+
+//if robot is on the left side of arena
+void leftAuto()
 {
-	//new algorithm
-	//if left
-	if(left)
-	{
-		//turn 45 degrees? left
+	//turn 45 degrees? left
 		turn(-30);
 		sleep(150);
 		stopWheels();
@@ -153,11 +146,12 @@ task main()
 		//place cone on mobile goal
 		coneOnMobileGoal();
 		//maybe ready robot for driver phase
-	}
-	//else
-	else
-	{
-		//turn 45 degrees? right
+}
+
+//if robot is on the right side of arena
+void rightAuto()
+{
+	//turn 45 degrees? right
 		turn(30);
 		sleep(150);
 		stopWheels();
@@ -186,6 +180,21 @@ task main()
 		//place cone on mobile goal
 		coneOnMobileGoal();
 		//maybe ready robot for driver phase
+}
+
+/***** AUTONOMOUS *****/
+task main()
+{
+	//new algorithm
+	//if left
+	if(left)
+	{
+		leftAuto();
+	}
+	//if right
+	else
+	{
+		rightAuto();
 	}
 
 	//og algotithm

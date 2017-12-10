@@ -46,7 +46,7 @@ void updateArm()
 	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
 		power += 1;
-		motor[armLeft] = -6-power;
+		motor[armLeft] = -7-power;
 		motor[armRight] = 6+power;
 	}
 	else
