@@ -117,10 +117,6 @@ void coneOnMobileGoal()
 //if robot is on the left side of arena
 void leftAuto()
 {
-	//turn 45 degrees? left
-		turn(-30);
-		sleep(150);
-		stopWheels();
 		//go straight until you reach white line
 		moveWheels(50);
 		waitUntil(SensorValue(lineTracker) < 1000);
@@ -151,10 +147,6 @@ void leftAuto()
 //if robot is on the right side of arena
 void rightAuto()
 {
-	//turn 45 degrees? right
-		turn(30);
-		sleep(150);
-		stopWheels();
 		//go straight until you reach white line
 		moveWheels(50);
 		waitUntil(SensorValue(lineTracker) < 1500);
@@ -198,9 +190,6 @@ task main()
 	}
 
 	//og algotithm
-	//turn clockwise
-		//45 degrees i think
-	//turn(50);
 		//move forward until you can grab cone
 		//stop
 	//pick up cone
