@@ -25,4 +25,6 @@ STACKING - change stacking method (top/bottom?)
     + new autonomous plan
 	start w/ cone in claw, drop on mobile goal, carry mobile goal to 20 point zone
 
+11. wheel type?
+
 also- ordering new parts? new vex net chip
