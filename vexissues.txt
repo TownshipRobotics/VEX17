@@ -24,4 +24,4 @@ STACKING - change stacking method
    + new autonomous plan
 	start w/ cone in claw, drop on mobile goal, carry mobile goal to 20 point zone
 
-also- new vex net chip
+also- ordering new parts? new vex net chip
