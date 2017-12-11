@@ -1,4 +1,4 @@
-(ordered in importance by lucas)
+(ordered in importance by lucas!)
 
 1. mobile goal lift
 
@@ -11,7 +11,7 @@
 5. smooth controls + movement
 
 -----
-STACKING - change stacking method
+STACKING - change stacking method (top/bottom?)
 
 7. arm extension for higher stacking
 
