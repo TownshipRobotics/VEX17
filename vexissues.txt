@@ -10,13 +10,17 @@
 
 5. smooth controls + movement
 
-6. arm extension for higher stacking
+-----
+STACKING - change stacking method
 
-7. automation of stacking process
+7. arm extension for higher stacking
 
-8. potentiometer instead of hard stops
+8. automation of stacking process
+-----
 
-9. autonomous programming in general
+9. potentiometer instead of hard stops
+
+10. autonomous programming in general
    + new autonomous plan
 	start w/ cone in claw, drop on mobile goal, carry mobile goal to 20 point zone
 
