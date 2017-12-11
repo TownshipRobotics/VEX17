@@ -21,7 +21,8 @@ STACKING - change stacking method (top/bottom?)
 9. potentiometer instead of hard stops
 
 10. autonomous programming in general
-   + new autonomous plan
+    use line sensors
+    + new autonomous plan
 	start w/ cone in claw, drop on mobile goal, carry mobile goal to 20 point zone
 
 also- ordering new parts? new vex net chip
