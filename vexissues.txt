@@ -1,6 +1,6 @@
-(ordered in importance by lucas!)
+issues to go over at meeting on 12/12 (ordered in importance by lucas!)
 
-1. mobile goal lift
+1. mobile goal lift 
 
 2. sensors
 
