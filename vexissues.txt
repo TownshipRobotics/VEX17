@@ -28,3 +28,5 @@ STACKING - change stacking method (top/bottom?)
 11. wheel type?
 
 also- ordering new parts? new vex net chip
+
+@buildteam please make the robot symmetrical lol
