@@ -1,3 +1,4 @@
+#pragma config(Sensor, in1,    potentiometer,  sensorPotentiometer)
 #pragma config(Motor,  port2,           leftFrontWheel, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightFrontWheel, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           leftBackWheel, tmotorVex393_MC29, openLoop)
@@ -37,7 +38,12 @@ void updateArm()
 {
 	int power = 0;
 
-	if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
+	if((SensorValue[potentiometer]>=2000)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+	{
+		motor[armLeft]=-30;
+		motor[armRight]=30;
+	}
+	else if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
 		power += 60;
 		motor[armLeft] = -50-power;
@@ -54,6 +60,7 @@ void updateArm()
 		motor[armLeft] = -30;
 		motor[armRight] = 30;
 	}
+
 }
 
 
