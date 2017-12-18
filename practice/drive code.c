@@ -38,27 +38,22 @@ void updateArm()
 {
 	int power = 0;
 
-	if((SensorValue[potentiometer]>=2000)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+	if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		motor[armLeft]=-30;
-		motor[armRight]=30;
+		power += 1;
+		motor[armLeft] = -7-power;
+		motor[armRight] = 6+power;
+	}
+	else if((SensorValue[potentiometer] <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+	{
+		motor[armLeft] = -30;
+		motor[armRight] = 30;
 	}
 	else if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
 		power += 60;
 		motor[armLeft] = -50-power;
 		motor[armRight] = 50+power;
-	}
-	else if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
-	{
-		power += 1;
-		motor[armLeft] = -7-power;
-		motor[armRight] = 6+power;
-	}
-	else
-	{
-		motor[armLeft] = -30;
-		motor[armRight] = 30;
 	}
 
 }
