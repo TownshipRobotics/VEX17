@@ -1,3 +1,4 @@
+#pragma config(Sensor, in1,    pot,            sensorPotentiometer)
 #pragma config(Sensor, in2,    lineTracker,    sensorLineFollower)
 #pragma config(Motor,  port2,           leftFrontMotor, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightFrontMotor, tmotorVex393_MC29, openLoop)
@@ -46,7 +47,7 @@ int rightMotorSpeed = 0;
 void moveWheels(int wheelPower)
 {
 	leftMotorSpeed = wheelPower;
-	rightMotorSpeed = -wheelPower;
+	rightMotorSpeed = -wheelPower-1;
 	motor[leftFrontMotor] = leftMotorSpeed;
 	motor[leftBackMotor] = leftMotorSpeed;
 	motor[rightFrontMotor] = rightMotorSpeed;
@@ -89,16 +90,32 @@ void openClaw()
 void closeClaw(int power)
 {
 	motor[claw] = -power;
-	sleep(750);
+	sleep(700);
 	motor[claw] = 0;
 }
 
 //***** ARM *****
 
+/*
+
+*/
+int armPower = 30;
+int horizontal = 120;
+int gravConst = 40;
+int bottom = 750;
+void moveArm(int speed) {
+  int gravity = gravConst-abs(horizontal-SensorValue[pot])*gravConst/600;
+
+  motor[armLeft] = -(speed+gravity);
+  motor[armRight] = speed+gravity;
+}
+
 //lifts up a yellow cone in its claw and holds it mid air
 void liftCone()
 {
-	closeClaw(45);
+	motor[claw] = -45;
+	sleep(750);
+	motor[claw] = -20;
 	motor[armLeft] = -110;
 	motor[armRight] = 110;
 	//wait 1 second
@@ -112,13 +129,26 @@ void liftCone()
 void coneOnMobileGoal()
 {
 	//move arm motors until cone on goal
-	motor[armLeft] = -80;
-	motor[armRight] = 79;
-	sleep(400);	//wait .25 seconds
+	motor[armLeft] = -10;
+	motor[armRight] = 10;
+	sleep(2500);	//wait .25 seconds
 	motor[armLeft] = -30;
 	motor[armRight] = 30;
 	//let go of cone
 	openClaw();
+}
+
+void auto2()
+{
+	closeClaw(35);
+	liftCone();
+	moveWheels(50);
+	sleep(3500);
+	stopWheels();
+	coneOnMobileGoal();
+	moveWheels(50);
+	sleep(1750);
+	stopWheels();
 }
 
 //what to do during autonomous period
@@ -126,28 +156,29 @@ void auto()
 {
 		//go straight until you reach white line
 		moveWheels(50);
-		sleep(3500);
+		sleep(2800);
 		stopWheels();
-		//turn 20 degrees? right
+	  //turn 20 degrees? right
 		turn(30);
 		sleep(500);
 		stopWheels();
-		//close claw
-		moveWheels(-30);
-		sleep(1000);
-		stopWheels();
 		closeClaw(35);
+		moveWheels(-30);
+		sleep(200);
+		stopWheels();
 		//open claw
 		openClaw();
+		moveWheels(30);
+		sleep(800);
+		stopWheels();
 		//pick up cone
 		liftCone();
 		//turn back 20 degrees left (or however much you turned before)
-		turn(-30);
+		turn(-40);
 		sleep(500);
 		stopWheels();
-		//move forward until you reach colored square where mobile goal is
-		moveWheels(50);
-		sleep(500);
+		moveWheels(20);
+		sleep(200);
 		stopWheels();
 		//place cone on mobile goal
 		coneOnMobileGoal();
@@ -155,6 +186,11 @@ void auto()
 }
 
 //***** DRIVING *****
+
+int modify(int input) {
+	//return pow(input,3)/16384;
+  return (input+(pow(input,5)/8192-pow(input,3))/8192)/3;
+}
 
 //drives wheels with two joysticks
 	//left and right forward = straight forward movement
@@ -164,10 +200,10 @@ void auto()
 	//left forward only = car turn clockwise
 	//right forward only = car turn counterclockwise
 void moveWheels(){
-	motor[leftFrontMotor] = .5*vexRT[Ch3];
-	motor[leftBackMotor] = .5*vexRT[Ch3];
-	motor[rightFrontMotor] = .5*-vexRT[Ch2];
-	motor[rightBackMotor] = .5*-vexRT[Ch2];
+	motor[leftFrontMotor] = modify(vexRT[Ch3]);
+	motor[leftBackMotor] = modify(vexRT[Ch3]);
+	motor[rightFrontMotor] = modify(-vexRT[Ch2]);
+	motor[rightBackMotor] = modify(-vexRT[Ch2]);
 }
 
 //opens or closes claw
@@ -250,7 +286,7 @@ void pre_auton()
 
 task autonomous()
 {
-  auto();
+  auto2();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -266,6 +302,8 @@ task autonomous()
 task usercontrol()
 {
   // User control code here, inside the loop
+	//waitUntil(vexRT[Btn8R] == 1)
+	//auto();
 
   while (true)
   {
