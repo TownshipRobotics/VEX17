@@ -1,6 +1,6 @@
 #pragma config(Sensor, in1,    potentiometer,  sensorPotentiometer)
-#pragma config(Motor,  port2,           leftFrontWheel, tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port3,           rightFrontWheel, tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port2,           left,          tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port3,           right,         tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           leftBackWheel, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port5,           rightBackWheel, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port6,           armLeft,       tmotorVex393_MC29, openLoop)
@@ -14,10 +14,9 @@
 
 
 void moveWheels(){
-	motor[leftFrontWheel] = .5*vexRT[Ch3];
-	motor[leftBackWheel] = .5*vexRT[Ch3];
-	motor[rightFrontWheel] = .5*-vexRT[Ch2];
-	motor[rightBackWheel] = .5*-vexRT[Ch2];
+	//og speeds were .5, .25 being used for
+	motor[left] = .5*vexRT[Ch3];
+	motor[right] = .5*-vexRT[Ch2];
 }
 
 //opens or closes claw
@@ -80,6 +79,13 @@ void updateArm()
 //	motor[armLeft] = 0;
 //	motor[armRight] = 0;
 //}
+
+//void updateMobileGoal(){
+	//if(vexRT[Btn8D] == 1)
+		//raiseArm();
+	//else if
+//}
+
 
 //claw - 6U opens
 // 6D close
