@@ -12,9 +12,22 @@
 //doubles don't exist in RobotC apparently, there is only floats
 
 
-
+//move the wheels depending on the values sent from the right and left joysticks
+//tank controls used
+	//left joystick moves left wheel
+	//right joystick moves right wheel
+	//joystick up moves wheel forward
+	//joystick down moves that wheel backward
+	//move robot straight forward = left and right forward
+	//move robot straight backward = left and right backward
+	//pivot robot left = left backward, right forward
+	//pivot robot right = left forward, right backward
+	//car turn left = left not moved, right forward
+	//car turn right = left forward, right not moved
+	//left curve = left and right forward, but right is more forward than the other 
+	//right curve = left and right forward, but left is more forward than the other
 void moveWheels(){
-	//og speeds were .5, .25 being used for
+	//original speed constants were .5, kept the same at request from testing
 	motor[left] = .5*vexRT[Ch3];
 	motor[right] = .5*-vexRT[Ch2];
 }
@@ -33,6 +46,8 @@ void updateClaw()
 }
 
 //raises, lowers, or stops moving the arm depending if button 5U, 5D, or neither are pressed
+	//5U raises arm
+	//5D lowers arm
 void updateArm()
 {
 	int power = 0;
@@ -80,11 +95,42 @@ void updateArm()
 //	motor[armRight] = 0;
 //}
 
-//void updateMobileGoal(){
-	//if(vexRT[Btn8D] == 1)
-		//raiseArm();
-	//else if
-//}
+//lifts the mobile goal, needs to be heavily tested
+void raiseCarrier()
+{
+	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
+	motor[carrierUp] = -100;
+	motor[carrierDown] = -100;
+	//wait 1 second, needs to be tested and probably changed but this is the test value
+	sleep(1000);
+	//stop carrier motors
+	motor[carrierUp] = 0;
+	motor[carrierDown] = 0;
+}
+
+//lowers the mobile goal, needs to be heavily tested
+void lowerCarrier()
+{
+	//move carrier motors at the same descending speed the arm has, 6
+	motor[carrierUp] = 10;
+	motor[carrierDown] = 10;
+	//wait 1 second, needs to be tested and probably changed but this is the test value
+	sleep(1000);
+	//stop carrier motors
+	motor[carrierLeft] = 0;
+	motor[carrierRight] = 0;
+}
+
+//raises or lowers the mobile goal carrier depending if button 8D, 8R, or neither are pressed
+	//8D lifts mobile goal
+	//8R lowers mobile goal
+void updateMobileGoal()
+{
+	if(vexRT[Btn8D] == 1)
+		raiseCarrier();
+	else if(vexRT[Btn8R] == 1)
+		lowerCarrier();
+}
 
 
 //claw - 6U opens
@@ -94,7 +140,7 @@ void updateArm()
 //mobile goal
 //8D raises
 //8R lowers
-//left joystick controls wheels
+//left and right joysticks controls wheels with tank controls
 
 //make sure main() is the last "task", weird C mechanic
 task main()
@@ -102,11 +148,13 @@ task main()
 	//apparently does not compile, but book says "this command should be the first thing in your "task main()" so idk
 	//will not set up any motors and sensors, you must manually set the motos and sensors in the 'Motors and Sensors Setup' menu
 	//robotType();
+
 	//only two motors will be used for the base so we can use the rest to lift the cones and mobile goal
 
 	while(true){
 		moveWheels();
 		updateClaw();
 		updateArm();
+		updateMobileGoal();
 	}
 }
