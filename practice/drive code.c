@@ -1,8 +1,8 @@
 #pragma config(Sensor, in1,    potentiometer,  sensorPotentiometer)
-#pragma config(Motor,  port2,           left,          tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port3,           right,         tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port4,           leftBackWheel, tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port5,           rightBackWheel, tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port2,           leftWheel,     tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port3,           rightWheel,    tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port4,           carrierUp,     tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port5,           carrierDown,   tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port6,           armLeft,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           armRight,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           claw,          tmotorVex393_MC29, openLoop)
@@ -24,12 +24,12 @@
 	//pivot robot right = left forward, right backward
 	//car turn left = left not moved, right forward
 	//car turn right = left forward, right not moved
-	//left curve = left and right forward, but right is more forward than the other 
+	//left curve = left and right forward, but right is more forward than the other
 	//right curve = left and right forward, but left is more forward than the other
 void moveWheels(){
 	//original speed constants were .5, kept the same at request from testing
-	motor[left] = .5*vexRT[Ch3];
-	motor[right] = .5*-vexRT[Ch2];
+	motor[leftWheel] = .75*vexRT[Ch3];
+	motor[rightWheel] = .75*-vexRT[Ch2];
 }
 
 //opens or closes claw
@@ -117,8 +117,8 @@ void lowerCarrier()
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	sleep(1000);
 	//stop carrier motors
-	motor[carrierLeft] = 0;
-	motor[carrierRight] = 0;
+	motor[carrierUp] = 0;
+	motor[carrierDown] = 0;
 }
 
 //raises or lowers the mobile goal carrier depending if button 8D, 8R, or neither are pressed
