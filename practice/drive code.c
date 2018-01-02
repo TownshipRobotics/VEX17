@@ -1,8 +1,7 @@
 #pragma config(Sensor, in1,    potentiometer,  sensorPotentiometer)
 #pragma config(Motor,  port2,           leftWheel,     tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightWheel,    tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port4,           carrierUp,     tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port5,           carrierDown,   tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port4,           carrier,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port6,           armLeft,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           armRight,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           claw,          tmotorVex393_MC29, openLoop)
@@ -99,26 +98,22 @@ void updateArm()
 void raiseCarrier()
 {
 	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
-	motor[carrierUp] = -100;
-	motor[carrierDown] = -100;
+	motor[carrier] = -100;
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	sleep(1000);
 	//stop carrier motors
-	motor[carrierUp] = 0;
-	motor[carrierDown] = 0;
+	motor[carrier] = 0;
 }
 
 //lowers the mobile goal, needs to be heavily tested
 void lowerCarrier()
 {
 	//move carrier motors at the same descending speed the arm has, 6
-	motor[carrierUp] = 10;
-	motor[carrierDown] = 10;
+	motor[carrier] = 10;
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	sleep(1000);
 	//stop carrier motors
-	motor[carrierUp] = 0;
-	motor[carrierDown] = 0;
+	motor[carrier] = 0;
 }
 
 //raises or lowers the mobile goal carrier depending if button 8D, 8R, or neither are pressed
