@@ -98,7 +98,7 @@ void updateArm()
 void raiseCarrier()
 {
 	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
-	motor[carrier] = -100;
+	motor[carrier] = 100;
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	sleep(1000);
 	//stop carrier motors
@@ -109,7 +109,7 @@ void raiseCarrier()
 void lowerCarrier()
 {
 	//move carrier motors at the same descending speed the arm has, 6
-	motor[carrier] = 10;
+	motor[carrier] = -50;
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	sleep(1000);
 	//stop carrier motors
