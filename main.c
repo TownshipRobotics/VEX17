@@ -199,13 +199,18 @@ void updateArm()
 void raiseCarrier()
 {
 	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
-	motor[carrier] = 100;
+	for(int coefficient = 1; coefficient <= 10; coefficient++)
+	{
+		motor[carrier] = 10*coefficient;
+		sleep(100);
+	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
-	sleep(1000);
+	//sleep(1000);
 	//stop carrier motors
 	motor[carrier] = 0;
 }
 
+//lowers the mobile goal, needs to be heavily tested
 //lowers the mobile goal, needs to be heavily tested
 void lowerCarrier()
 {
