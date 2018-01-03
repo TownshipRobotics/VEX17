@@ -222,6 +222,17 @@ void lowerCarrier()
 	motor[carrier] = 0;
 }
 
+//raises or lowers the mobile goal carrier depnding if button 8D, 8R, or neither are pressed
+	//8D lifts mobile goal
+	//8R lowers mobile goal
+void updateMobileGoal()
+{
+	if(vexRT[Btn8D] == 1)
+		raiseCarrier();
+	else if(vexRT[Btn8R] == 1)
+		lowerCarrier();
+}
+
 //claw - 6U opens
 // 6D close
 //arm - 5U raises up
@@ -257,5 +268,6 @@ task usercontrol()
     moveWheels();
 		updateClaw();
 		updateArm();
+		updateMobileGoal();
   }
 }
