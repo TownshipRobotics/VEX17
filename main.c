@@ -1,4 +1,4 @@
-#pragma config(Sensor, in1,    potentiometer,  sensorPotentiometer)
+#pragma config(Sensor, in1,    pot,            sensorPotentiometer)
 #pragma config(Motor,  port2,           leftWheel,     tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightWheel,    tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           carrier,       tmotorVex393_MC29, openLoop)
@@ -33,8 +33,6 @@ int rightMotorSpeed = 0;
 //         METHODS
 //*************************
 
-//***** AUTONOMOUS *****
-
 /***** MOVEMENT *****/
 
 //move the robot forward or backward
@@ -46,30 +44,14 @@ void moveWheels(int wheelPower)
 {
 	leftMotorSpeed = wheelPower;
 	rightMotorSpeed = -wheelPower-1;
-	motor[leftFrontMotor] = leftMotorSpeed;
-	motor[leftBackMotor] = leftMotorSpeed;
-	motor[rightFrontMotor] = rightMotorSpeed;
-	motor[rightBackMotor] = rightMotorSpeed;
-}
-
-//turn in place
-//power is what direction and how fast to turn, values -127 to 127 are acceptable
-	//if power is a positive integer it goes clockwise
-	//if power is a negative integer it goes counterclockwise
-void turn(int power)
-{
-	motor[leftFrontMotor] = -power;
-	motor[leftBackMotor] = -power;
-	motor[rightFrontMotor] = -power;
-	motor[rightBackMotor] = -power;
+	motor[leftWheel] = leftMotorSpeed;
+	motor[rightWheel] = rightMotorSpeed;
 }
 
 //stops wheel motors so robot stops moving
 void stopWheels(){
-	motor[leftFrontMotor] = 0;
-	motor[leftBackMotor] = 0;
-	motor[rightFrontMotor] = 0;
-	motor[rightBackMotor] = 0;
+	motor[leftWheel] = 0;
+	motor[rightWheel] = 0;
 }
 
 //***** CLAW *****
@@ -94,13 +76,8 @@ void closeClaw(int power)
 
 //***** ARM *****
 
-/*
-
-*/
-int armPower = 30;
 int horizontal = 120;
 int gravConst = 40;
-int bottom = 750;
 void moveArm(int speed) {
   int gravity = gravConst-abs(horizontal-SensorValue[pot])*gravConst/600;
 
@@ -136,7 +113,9 @@ void coneOnMobileGoal()
 	openClaw();
 }
 
-void auto2()
+//***** AUTONOMOUS *****
+
+void auto()
 {
 	closeClaw(35);
 	liftCone();
@@ -147,40 +126,6 @@ void auto2()
 	moveWheels(50);
 	sleep(1750);
 	stopWheels();
-}
-
-//what to do during autonomous period
-void auto()
-{
-		//go straight until you reach white line
-		moveWheels(50);
-		sleep(2800);
-		stopWheels();
-	  //turn 20 degrees? right
-		turn(30);
-		sleep(500);
-		stopWheels();
-		closeClaw(35);
-		moveWheels(-30);
-		sleep(200);
-		stopWheels();
-		//open claw
-		openClaw();
-		moveWheels(30);
-		sleep(800);
-		stopWheels();
-		//pick up cone
-		liftCone();
-		//turn back 20 degrees left (or however much you turned before)
-		turn(-40);
-		sleep(500);
-		stopWheels();
-		moveWheels(20);
-		sleep(200);
-		stopWheels();
-		//place cone on mobile goal
-		coneOnMobileGoal();
-		//maybe ready robot for driver phase
 }
 
 //***** DRIVING *****
@@ -236,7 +181,7 @@ void updateArm()
 		motor[armLeft] = -7-power;
 		motor[armRight] = 6+power;
 	}
-	else if((SensorValue[potentiometer] <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+	else if((SensorValue[pot] <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
 	{
 		motor[armLeft] = -30;
 		motor[armRight] = 30;
@@ -249,29 +194,6 @@ void updateArm()
 	}
 
 }
-
-
-//method to raise arm but can't do anything else until it stops moving
-//supposed to be used with if(vexRT[Btn5U] == 1)
-//just here in case updateArm doesn't work out
-//void raiseArm(){
-//	motor[armLeft] = 50;
-//	motor[armRight] = -50;
-//	waitUntil(vexRT[Btn5U] == 0);
-//	motor[armLeft] = 0;
-//	motor[armRight] = 0;
-//}
-
-//method to lower arm but can't do anything else until it stops moving
-//supposed to be used with if(vexRT[Btn5D] == 1)
-//just here in case updateArm doesn't work out
-//void lowerArm(){
-//	motor[armLeft] = -50;
-//	motor[armRight] = 50;
-//	waitUntil(vexRT[Btn5D] == 0);
-//	motor[armLeft] = 0;
-//	motor[armRight] = 0;
-//}
 
 //lifts the mobile goal, needs to be heavily tested
 void raiseCarrier()
@@ -295,18 +217,6 @@ void lowerCarrier()
 	motor[carrier] = 0;
 }
 
-//raises or lowers the mobile goal carrier depending if button 8D, 8R, or neither are pressed
-	//8D lifts mobile goal
-	//8R lowers mobile goal
-void updateMobileGoal()
-{
-	if(vexRT[Btn8D] == 1)
-		raiseCarrier();
-	else if(vexRT[Btn8R] == 1)
-		lowerCarrier();
-}
-
-
 //claw - 6U opens
 // 6D close
 //arm - 5U raises up
@@ -316,78 +226,20 @@ void updateMobileGoal()
 //8R lowers
 //left and right joysticks controls wheels with tank controls
 
-//make sure main() is the last "task", weird C mechanic
-task main()
-{
-	//apparently does not compile, but book says "this command should be the first thing in your "task main()" so idk
-	//will not set up any motors and sensors, you must manually set the motos and sensors in the 'Motors and Sensors Setup' menu
-	//robotType();
-
-	//only two motors will be used for the base so we can use the rest to lift the cones and mobile goal
-
-	while(true){
-		moveWheels();
-		updateClaw();
-		updateArm();
-		updateMobileGoal();
-	}
-}
-
 
 //*************************
 //          TASKS
 //*************************
 
-/*---------------------------------------------------------------------------*/
-/*                          Pre-Autonomous Functions                         */
-/*                                                                           */
-/*  You may want to perform some actions before the competition starts.      */
-/*  Do them in the following function.  You must return from this function   */
-/*  or the autonomous and usercontrol tasks will not be started.  This       */
-/*  function is only called once after the cortex has been powered on and    */
-/*  not every time that the robot is disabled.                               */
-/*---------------------------------------------------------------------------*/
-
 void pre_auton()
 {
-  // Set bStopTasksBetweenModes to false if you want to keep user created tasks
-  // running between Autonomous and Driver controlled modes. You will need to
-  // manage all user created tasks if set to false.
   bStopTasksBetweenModes = true;
-
-	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
-	// used by the competition include file, for example, you might want
-	// to display your team name on the LCD in this function.
-	// bDisplayCompetitionStatusOnLcd = false;
-
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
 }
-
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              Autonomous Task                              */
-/*                                                                           */
-/*  This task is used to control your robot during the autonomous phase of   */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
 
 task autonomous()
 {
-  auto2();
+  auto();
 }
-
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              User Control Task                            */
-/*                                                                           */
-/*  This task is used to control your robot during the user control phase of */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
 
 task usercontrol()
 {
