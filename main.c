@@ -1,7 +1,8 @@
 #pragma config(Sensor, in1,    pot,            sensorPotentiometer)
 #pragma config(Motor,  port2,           leftWheel,     tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightWheel,    tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port4,           carrier,       tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port4,           carrierRight,  tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port5,           carrierLeft,   tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port6,           armLeft,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           armRight,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           claw,          tmotorVex393_MC29, openLoop)
@@ -43,7 +44,7 @@ int rightMotorSpeed = 0;
 void moveWheels(int wheelPower)
 {
 	leftMotorSpeed = wheelPower;
-	rightMotorSpeed = -wheelPower-1;
+	rightMotorSpeed = -wheelPower-1;	//why is there a -1?
 	motor[leftWheel] = leftMotorSpeed;
 	motor[rightWheel] = rightMotorSpeed;
 }
@@ -149,7 +150,7 @@ int modify(int input) {
 	//car turn right = left forward, right not moved
 	//left curve = left and right forward, but right is more forward than the other
 	//right curve = left and right forward, but left is more forward than the other
-void moveWheels(){
+void updateWheels(){
 	//original speed constants were .5, kept the same at request from testing
 	motor[leftWheel] = modify(vexRT[Ch3]);
 	motor[rightWheel] = -modify(vexRT[Ch2]);
@@ -173,24 +174,24 @@ void updateClaw()
 	//5D lowers arm
 void updateArm()
 {
-	int power = 0;
+	//int power = 0;
 
 	if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
 	{
-		power += 1;
-		motor[armLeft] = -7-power;
-		motor[armRight] = 6+power;
+		//power += 1;
+		motor[armLeft] = -8;	//-7-power;
+		motor[armRight] = 7;	//6+power;
 	}
-	else if((SensorValue[pot] <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+	else if(((SensorValue[pot]+2000) <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
 	{
 		motor[armLeft] = -30;
 		motor[armRight] = 30;
 	}
   else if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
-		power += 60;
-		motor[armLeft] = -50-power;
-		motor[armRight] = 50+power;
+		//power += 60;
+		motor[armLeft] = -110;	//-50-power;
+		motor[armRight] = 110;	//50+power;
 	}
 
 }
@@ -201,25 +202,35 @@ void raiseCarrier()
 	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
 	for(int coefficient = 1; coefficient <= 10; coefficient++)
 	{
-		motor[carrier] = 10*coefficient;
+		motor[carrierLeft] = 10*coefficient;
+		motor[carrierRight] = 10*coefficient;
 		sleep(100);
 	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	//sleep(1000);
 	//stop carrier motors
-	motor[carrier] = 0;
+	motor[carrierLeft] = 0;
+	motor[carrierRight] = 0;
 }
 
 //lowers the mobile goal, needs to be heavily tested
 //lowers the mobile goal, needs to be heavily tested
 void lowerCarrier()
 {
+	for(int coefficient = 1; coefficient <= 4; coefficient++)
+	{
+		motor[carrierLeft] = -10*coefficient;
+		motor[carrierRight] = -10*coefficient;
+		sleep(250);
+	}
 	//move carrier motors at the same descending speed the arm has, 6
-	motor[carrier] = -50;
+	//motor[carrierRight] = -50;
+	//motor[carrierLeft] = -50;
 	//wait 1 second, needs to be tested and probably changed but this is the test value
-	sleep(1000);
+	//sleep(1000);
 	//stop carrier motors
-	motor[carrier] = 0;
+	motor[carrierRight] = 0;
+	motor[carrierLeft] = 0;
 }
 
 //raises or lowers the mobile goal carrier depnding if button 8D, 8R, or neither are pressed
@@ -265,7 +276,7 @@ task usercontrol()
 
   while (true)
   {
-    moveWheels();
+    updateWheels();
 		updateClaw();
 		updateArm();
 		updateMobileGoal();
