@@ -136,7 +136,7 @@ int modify(int input) {
 }
 
 //move the wheels depending on the values sent from the right and left joysticks
-//tank controls used
+//tank controls used for 2 joysticks
 	//left joystick moves left wheel
 	//right joystick moves right wheel
 	//joystick up moves wheel forward
@@ -149,10 +149,48 @@ int modify(int input) {
 	//car turn right = left forward, right not moved
 	//left curve = left and right forward, but right is more forward than the other
 	//right curve = left and right forward, but left is more forward than the other
-void moveWheels(){
+void updateWheels(){
+	//***** TWO JOYSTICKS *****
 	//original speed constants were .5, kept the same at request from testing
-	motor[leftWheel] = modify(vexRT[Ch3]);
-	motor[rightWheel] = -modify(vexRT[Ch2]);
+	//motor[leftWheel] = modify(vexRT[Ch3]);
+	//motor[rightWheel] = -modify(vexRT[Ch2]);
+
+	//***** ONE JOYSTICK *****
+	//if joystick is being used, don't bother doing calculations
+	if(vexRT[Ch1]==0 && vexRT[Ch2]==0)
+		return;
+	//last year, we used the right joystick to drive the wheels
+	//to calcuate the power to move the motor at, take the distance between (ch4 value, ch3 value) and (0,0) or the square root of ((x^2)+(y^2))
+	int calculatedPower = sqrt(pow(vexRT[Ch1],2)+pow(vexRT[Ch2],2));
+	//if you were to face the same direction the robot is, left wheel moves -1*(calculated power) and right wheel moves the calculated power
+	//to turn, make the power go to the motors at a percentage
+	//percentage calculation is probably (ch4Value/254)+.5
+		//254 is the denominator because it is the max motor speed, 127, times 2
+	//if ch4 > 0
+	if(vexRT[Ch1]<-10){
+		//right motor speed = ((ch4Value/254)+.5)*(calculated power)
+		rightMotorSpeed = (vexRT[Ch1]/254+.5)*calculatedPower;
+		//left motor speed = 1-(right motor speed)
+		leftMotorSpeed = -(1-rightMotorSpeed);
+	}
+	//if ch4 < 0
+	else if(vexRT[Ch1]>10){
+		//left motor speed = ((ch4Value/254)+.5)*(calculated power)
+		leftMotorSpeed = -((vexRT[Ch1]/254+.5)*calculatedPower);
+		//right motor speed = 1-(left motor speed)
+		rightMotorSpeed = 1-leftMotorSpeed;
+	}
+	//if joystick at center and up or down
+	else{
+		//return
+		leftMotorSpeed = -calculatedPower;
+		rightMotorSpeed = calculatedPower;
+	}
+	//add modify to motor speeds later
+	//left motor go
+	motor[leftWheel] = leftMotorSpeed;
+	//right motor go
+	motor[rightWheel] = rightMotorSpeed;
 }
 
 //opens or closes claw
