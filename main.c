@@ -150,18 +150,19 @@ int modify(int input) {
 	//left curve = left and right forward, but right is more forward than the other
 	//right curve = left and right forward, but left is more forward than the other
 void updateWheels(){
-	//***** TWO JOYSTICKS *****
+	//***** TANK CONTROLS *****
 	//original speed constants were .5, kept the same at request from testing
 	//motor[leftWheel] = modify(vexRT[Ch3]);
 	//motor[rightWheel] = -modify(vexRT[Ch2]);
 
-	//***** ONE JOYSTICK *****
+	//***** ONE JOYSTICK TURNS, ONE JOYSTICK GOES FORWARD AND BACKWARD *****
 	//if joystick is being used, don't bother doing calculations
-	if(vexRT[Ch1]==0 && vexRT[Ch2]==0)
+	if(vexRT[Ch1]==0 && vexRT[Ch3]==0){
 		return;
+	}
 	//last year, we used the right joystick to drive the wheels
 	//to calcuate the power to move the motor at, take the distance between (ch4 value, ch3 value) and (0,0) or the square root of ((x^2)+(y^2))
-	int calculatedPower = sqrt(pow(vexRT[Ch1],2)+pow(vexRT[Ch2],2));
+	//int calculatedPower = sqrt(pow(vexRT[Ch1],2)+pow(vexRT[Ch3],2));
 	//if you were to face the same direction the robot is, left wheel moves -1*(calculated power) and right wheel moves the calculated power
 	//to turn, make the power go to the motors at a percentage
 	//percentage calculation is probably (ch4Value/254)+.5
@@ -169,14 +170,14 @@ void updateWheels(){
 	//if ch4 > 0
 	if(vexRT[Ch1]<-10){
 		//right motor speed = ((ch4Value/254)+.5)*(calculated power)
-		rightMotorSpeed = (vexRT[Ch1]/254+.5)*calculatedPower;
+		rightMotorSpeed = (vexRT[Ch1]/254+.5)*vexRT[Ch3];	//calculatedPower;
 		//left motor speed = 1-(right motor speed)
 		leftMotorSpeed = -(1-rightMotorSpeed);
 	}
 	//if ch4 < 0
 	else if(vexRT[Ch1]>10){
 		//left motor speed = ((ch4Value/254)+.5)*(calculated power)
-		leftMotorSpeed = -((vexRT[Ch1]/254+.5)*calculatedPower);
+		leftMotorSpeed = -((vexRT[Ch1]/254+.5)*vexRT[Ch3]);	//calculatedPower);
 		//right motor speed = 1-(left motor speed)
 		rightMotorSpeed = 1-leftMotorSpeed;
 	}
@@ -287,7 +288,7 @@ task usercontrol()
 
   while (true)
   {
-    moveWheels();
+    updateWheels();
 		updateClaw();
 		updateArm();
   }
