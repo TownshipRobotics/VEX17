@@ -184,8 +184,8 @@ void updateWheels(){
 	//if joystick at center and up or down
 	else{
 		//return
-		leftMotorSpeed = -calculatedPower;
-		rightMotorSpeed = calculatedPower;
+		leftMotorSpeed = -vexRT[Ch3];
+		rightMotorSpeed = vexRT[Ch3];
 	}
 	//add modify to motor speeds later
 	//left motor go
