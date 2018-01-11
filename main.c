@@ -170,22 +170,22 @@ void updateWheels(){
 	//if ch4 > 0
 	if(vexRT[Ch1]<-10){
 		//right motor speed = ((ch4Value/254)+.5)*(calculated power)
-		rightMotorSpeed = (vexRT[Ch1]/254+.5)*vexRT[Ch3];	//calculatedPower;
+		rightMotorSpeed = (vexRT[Ch1]/254+.5)*(.5*vexRT[Ch3]);	//calculatedPower;
 		//left motor speed = 1-(right motor speed)
 		leftMotorSpeed = -(1-rightMotorSpeed);
 	}
 	//if ch4 < 0
 	else if(vexRT[Ch1]>10){
 		//left motor speed = ((ch4Value/254)+.5)*(calculated power)
-		leftMotorSpeed = -((vexRT[Ch1]/254+.5)*vexRT[Ch3]);	//calculatedPower);
+		leftMotorSpeed = -((vexRT[Ch1]/254+.5)*(.5*vexRT[Ch3]));	//calculatedPower);
 		//right motor speed = 1-(left motor speed)
 		rightMotorSpeed = 1-leftMotorSpeed;
 	}
 	//if joystick at center and up or down
 	else{
 		//return
-		leftMotorSpeed = -vexRT[Ch3];
-		rightMotorSpeed = vexRT[Ch3];
+		leftMotorSpeed = -.5*vexRT[Ch3];
+		rightMotorSpeed = .5*vexRT[Ch3];
 	}
 	//add modify to motor speeds later
 	//left motor go
