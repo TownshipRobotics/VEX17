@@ -200,11 +200,17 @@ void updateArm()
 void raiseCarrier()
 {
 	//move carrier motors at speed so it should difinitely be able to lift the mobile goal
-	for(int coefficient = 1; coefficient <= 10; coefficient++)
+	//for(int coefficient = 1; coefficient <= 10; coefficient++)
+	//{
+	//	motor[carrierLeft] = 10*coefficient;
+	//	motor[carrierRight] = 10*coefficient;
+	//	sleep(100);
+	//}
+	for(int base = 1; base <= 5; base++)
 	{
-		motor[carrierLeft] = 10*coefficient;
-		motor[carrierRight] = 10*coefficient;
-		sleep(100);
+		motor[carrierLeft] = -pow(base,3);
+		motor[carrierRight] = pow(base,3);
+		sleep(200);
 	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	//sleep(1000);
@@ -217,11 +223,17 @@ void raiseCarrier()
 //lowers the mobile goal, needs to be heavily tested
 void lowerCarrier()
 {
-	for(int coefficient = 1; coefficient <= 4; coefficient++)
+	//for(int coefficient = 1; coefficient <= 4; coefficient++)
+	//{
+	//	motor[carrierLeft] = -10*coefficient;
+	//	motor[carrierRight] = -10*coefficient;
+	//	sleep(250);
+	//}
+	for(int base = 1; base <= 5; base++)
 	{
-		motor[carrierLeft] = -10*coefficient;
-		motor[carrierRight] = -10*coefficient;
-		sleep(250);
+		motor[carrierLeft] = (pow(base,3));
+		motor[carrierRight] = -(pow(base,3));
+		sleep(200);
 	}
 	//move carrier motors at the same descending speed the arm has, 6
 	//motor[carrierRight] = -50;
