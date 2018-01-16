@@ -28,6 +28,7 @@
 //************************
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
+bool up = true;
 
 
 //*************************
@@ -206,10 +207,10 @@ void raiseCarrier()
 	//	motor[carrierRight] = 10*coefficient;
 	//	sleep(100);
 	//}
-	for(int base = 1; base <= 5; base++)
+	for(int base = 1; base <= 10; base++)
 	{
-		motor[carrierLeft] = -pow(base,3);
-		motor[carrierRight] = pow(base,3);
+		motor[carrierLeft] = -pow(base,2);
+		motor[carrierRight] = pow(base,2);
 		sleep(200);
 	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
@@ -229,11 +230,11 @@ void lowerCarrier()
 	//	motor[carrierRight] = -10*coefficient;
 	//	sleep(250);
 	//}
-	for(int base = 1; base <= 5; base++)
+	for(int base = 1; base <= 10; base++)
 	{
-		motor[carrierLeft] = (pow(base,3));
-		motor[carrierRight] = -(pow(base,3));
-		sleep(200);
+		motor[carrierLeft] = (pow(base,2));
+		motor[carrierRight] = -(pow(base,2));
+		sleep(100);
 	}
 	//move carrier motors at the same descending speed the arm has, 6
 	//motor[carrierRight] = -50;
@@ -250,10 +251,18 @@ void lowerCarrier()
 	//8R lowers mobile goal
 void updateMobileGoal()
 {
-	if(vexRT[Btn8D] == 1)
-		raiseCarrier();
-	else if(vexRT[Btn8R] == 1)
-		lowerCarrier();
+	if(up){
+		if(vexRT[Btn8R] == 1){
+			lowerCarrier();
+			up = false;
+		}
+	}
+	else{
+		if(vexRT[Btn8D] == 1){
+			raiseCarrier();
+			up = true;
+		}
+	}
 }
 
 //claw - 6U opens
