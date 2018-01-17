@@ -211,7 +211,7 @@ void raiseCarrier()
 	{
 		motor[carrierLeft] = -pow(base,2);
 		motor[carrierRight] = pow(base,2);
-		sleep(200);
+		sleep(186);
 	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
 	//sleep(1000);
@@ -234,7 +234,7 @@ void lowerCarrier()
 	{
 		motor[carrierLeft] = (pow(base,2));
 		motor[carrierRight] = -(pow(base,2));
-		sleep(100);
+		sleep(86);
 	}
 	//move carrier motors at the same descending speed the arm has, 6
 	//motor[carrierRight] = -50;
