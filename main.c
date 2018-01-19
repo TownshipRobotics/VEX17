@@ -209,8 +209,8 @@ void raiseCarrier()
 	//}
 	for(int base = 1; base <= 10; base++)
 	{
-		motor[carrierLeft] = -pow(base,2);
-		motor[carrierRight] = pow(base,2);
+		motor[carrierLeft] = pow(base,2);
+		motor[carrierRight] = -pow(base,2);
 		sleep(186);
 	}
 	//wait 1 second, needs to be tested and probably changed but this is the test value
@@ -232,8 +232,8 @@ void lowerCarrier()
 	//}
 	for(int base = 1; base <= 10; base++)
 	{
-		motor[carrierLeft] = (pow(base,2));
-		motor[carrierRight] = -(pow(base,2));
+		motor[carrierLeft] = -(pow(base,2));
+		motor[carrierRight] = (pow(base,2));
 		sleep(86);
 	}
 	//move carrier motors at the same descending speed the arm has, 6
