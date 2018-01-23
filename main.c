@@ -234,7 +234,7 @@ void lowerCarrier()
 	{
 		motor[carrierLeft] = -(pow(base,2));
 		motor[carrierRight] = (pow(base,2));
-		sleep(86);
+		sleep(105);
 	}
 	//move carrier motors at the same descending speed the arm has, 6
 	//motor[carrierRight] = -50;
