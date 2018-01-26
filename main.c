@@ -76,56 +76,23 @@ void closeClaw(int power)
 
 //***** ARM *****
 
-int horizontal = 120;
-int gravConst = 40;
+// constants- MAY NEED MODIFICATION
+int horizontal = 1100; // Should be the potentiometer value when the arm is fully horizontal
+int vertical = 2700;   // Should be the potentiometer value when the arm is fully vertical
+int weight = 50;       // Higher weight = more power against gravity
+
 void moveArm(int speed) {
-  int gravity = gravConst-abs(horizontal-SensorValue[pot])*gravConst/600;
+  int gravity = (int) (weight*cos(PI/2*(SensorValue[pot]-horizontal)/(vertical-horizontal)));
 
   motor[armLeft] = -(speed+gravity);
   motor[armRight] = speed+gravity;
-}
-
-//lifts up a yellow cone in its claw and holds it mid air
-void liftCone()
-{
-	motor[claw] = -45;
-	sleep(750);
-	motor[claw] = -20;
-	motor[armLeft] = -110;
-	motor[armRight] = 110;
-	//wait 1 second
-	sleep(1000);
-	//stop motors
-	motor[armLeft] = -30;
-	motor[armRight] = 30;
-}
-
-//places the cone the robot is holding midair on the mobile goal in front of it
-void coneOnMobileGoal()
-{
-	//move arm motors until cone on goal
-	motor[armLeft] = -10;
-	motor[armRight] = 10;
-	sleep(2500);	//wait .25 seconds
-	motor[armLeft] = -30;
-	motor[armRight] = 30;
-	//let go of cone
-	openClaw();
 }
 
 //***** AUTONOMOUS *****
 
 void auto()
 {
-	closeClaw(35);
-	liftCone();
-	moveWheels(50);
-	sleep(3500);
-	stopWheels();
-	coneOnMobileGoal();
-	moveWheels(50);
-	sleep(1750);
-	stopWheels();
+
 }
 
 //***** DRIVING *****
@@ -173,24 +140,16 @@ void updateClaw()
 	//5D lowers arm
 void updateArm()
 {
-	int power = 0;
-
-	if(vexRT[Btn5D] == 1) //if left lower Z button is pressed
+	if(vexRT[Btn5D] == vexRT[Btn5D]) //if both pressed
 	{
-		power += 1;
-		motor[armLeft] = -7-power;
-		motor[armRight] = 6+power;
-	}
-	else if((SensorValue[pot] <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+		moveArm(0);
+	} else if(vexRT[Btn5D] == 1)
 	{
-		motor[armLeft] = -30;
-		motor[armRight] = 30;
+		moveArm(10);
 	}
   else if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
 	{
-		power += 60;
-		motor[armLeft] = -50-power;
-		motor[armRight] = 50+power;
+		moveArm(-10);
 	}
 
 }
