@@ -26,8 +26,6 @@
 //************************
 //       VARIABLES
 //************************
-int leftMotorSpeed = 0;
-int rightMotorSpeed = 0;
 bool up = true;
 
 
@@ -41,13 +39,20 @@ bool up = true;
 //wheelPower is how fast the robot goes, values -127 to 127 are acceptable
 	//if wheelPower is positive, robot goes forwards
 	//if wheelPower is negative, robot goes backwards
-//curve is how much the robot should turn tbd how the robot will use that value to turn though...
-void moveWheels(int wheelPower)
+//turn is how much the robot should turn tbd how the robot will use that value to turn though...
+void moveWheels(int power, int turn)
 {
-	leftMotorSpeed = wheelPower;
-	rightMotorSpeed = -wheelPower-1;	//why is there a -1?
-	motor[leftWheel] = leftMotorSpeed;
-	motor[rightWheel] = rightMotorSpeed;
+	float t2over128 = turn*turn/16384.0;
+	int left = power - (128+power)*t2over128;
+	int right = power + (128-power)*t2over128;
+
+	if (turn >= 0) {
+		motor[leftWheel] = -left;
+		motor[rightWheel] = right;
+	} else {
+		motor[leftWheel] = -right;
+		motor[rightWheel] = left;
+	}
 }
 
 //stops wheel motors so robot stops moving
@@ -104,8 +109,8 @@ int modify(int input) {
   return (input+(pow(input,5)/8192-pow(input,3))/8192)/3;
 }
 
-//move the wheels depending on the values sent from the right and left joysticks
-//tank controls used
+  //move the wheels depending on the values sent from the right and left joysticks
+  //tank controls used
 	//left joystick moves left wheel
 	//right joystick moves right wheel
 	//joystick up moves wheel forward
@@ -119,9 +124,7 @@ int modify(int input) {
 	//left curve = left and right forward, but right is more forward than the other
 	//right curve = left and right forward, but left is more forward than the other
 void updateWheels(){
-	//original speed constants were .5, kept the same at request from testing
-	motor[leftWheel] = modify(vexRT[Ch3]);
-	motor[rightWheel] = -modify(vexRT[Ch2]);
+	moveWheels(modify(vexRT[Ch3]), vexRT[Ch1]);
 }
 
 //opens or closes claw
@@ -140,7 +143,7 @@ void updateClaw()
 //raises, lowers, or stops moving the arm depending if button 5U, 5D, or neither are pressed
 	//5U raises arm
 	//5D lowers arm
-int upSpeed = 25;
+int upSpeed = 35;
 int downSpeed = 15;
 void updateArm()
 {
