@@ -78,56 +78,23 @@ void closeClaw(int power)
 
 //***** ARM *****
 
-int horizontal = 120;
-int gravConst = 40;
+// constants- MAY NEED MODIFICATION
+int horizontal = 1100; // Should be the potentiometer value when the arm is fully horizontal
+int vertical = 2850;   // Should be the potentiometer value when the arm is fully vertical
+int weight = 25;       // Higher weight = more power against gravity
+
 void moveArm(int speed) {
-  int gravity = gravConst-abs(horizontal-SensorValue[pot])*gravConst/600;
+  int gravity = (int) (weight*cos(PI/2*(SensorValue[pot]-horizontal)/(vertical-horizontal)));
 
-  motor[armLeft] = -(speed+gravity);
-  motor[armRight] = speed+gravity;
-}
-
-//lifts up a yellow cone in its claw and holds it mid air
-void liftCone()
-{
-	motor[claw] = -45;
-	sleep(750);
-	motor[claw] = -20;
-	motor[armLeft] = -110;
-	motor[armRight] = 110;
-	//wait 1 second
-	sleep(1000);
-	//stop motors
-	motor[armLeft] = -30;
-	motor[armRight] = 30;
-}
-
-//places the cone the robot is holding midair on the mobile goal in front of it
-void coneOnMobileGoal()
-{
-	//move arm motors until cone on goal
-	motor[armLeft] = -10;
-	motor[armRight] = 10;
-	sleep(2500);	//wait .25 seconds
-	motor[armLeft] = -30;
-	motor[armRight] = 30;
-	//let go of cone
-	openClaw();
+  motor[armLeft] = speed+gravity;
+  motor[armRight] = -(speed+gravity);
 }
 
 //***** AUTONOMOUS *****
 
 void auto()
 {
-	closeClaw(35);
-	liftCone();
-	moveWheels(50);
-	sleep(3500);
-	stopWheels();
-	coneOnMobileGoal();
-	moveWheels(50);
-	sleep(1750);
-	stopWheels();
+
 }
 
 //***** DRIVING *****
@@ -173,32 +140,29 @@ void updateClaw()
 //raises, lowers, or stops moving the arm depending if button 5U, 5D, or neither are pressed
 	//5U raises arm
 	//5D lowers arm
+int upSpeed = 25;
+int downSpeed = 15;
 void updateArm()
 {
-	if(vexRT[Btn5D] == 1) //if left lower z button is pressed
+	// If 5U button pressed
+	if(vexRT[Btn5U] == 1)
 	{
-		motor[armLeft] = -8;
-		motor[armRight] = 7;
-	}
-	//if the potentiometer sends back 0 and I attempted to change where the the 0 point is on the robot by adding 2000
-	//it works without the 2000, but now that the position of the potentiometer is changed, it will no longer work the
-	//way it used to.
-	//SensorValue[pot] gives you the value the potentiometer is currently at
-	//if the potentiometer value is equal to or less than 0, it will be above 120 degrees from the ground and should hang
-	//when it reaches that point or neither of the L1 and L2 buttons are being pressed
-	//this has to be between the if lowering arm and if raising arm because you want to see if you want to lower it first,
-	//then check to see if it is past the point where you shouldn't raise it, then if you want to raise the arm up
-	else if(((SensorValue[pot]+2000) <= 0)||((vexRT[Btn5U] == 0) && (vexRT[Btn5D] == 0)))
+		if(SensorValue[pot] > vertical) {
+			moveArm(downSpeed);
+		} else {
+			moveArm(upSpeed);
+		}
+	// If 5D button pressed
+	} else if(vexRT[Btn5D] == 1) //if left upper Z button is pressed
 	{
-		motor[armLeft] = -30;
-		motor[armRight] = 30;
+		if (SensorValue[pot] > vertical) {
+			moveArm(-upSpeed);
+		} else {
+		 	moveArm(-downSpeed);
+		}
+	} else {
+		moveArm(0);
 	}
-  else if(vexRT[Btn5U] == 1) //if left upper Z button is pressed
-	{
-		motor[armLeft] = -110;
-		motor[armRight] = 110;
-	}
-
 }
 
 //lifts the mobile goal
