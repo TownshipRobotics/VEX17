@@ -1,4 +1,8 @@
 #pragma config(Sensor, in1,    pot,            sensorPotentiometer)
+#pragma config(Sensor, in2,    ,               sensorAnalog)
+#pragma config(Sensor, dgtl1,  carrierBtn,     sensorTouch)
+#pragma config(Sensor, dgtl2,  rightUltSensor, sensorSONAR_mm)
+#pragma config(Sensor, dgtl4,  leftUltSensor,  sensorSONAR_mm)
 #pragma config(Motor,  port2,           leftWheel,     tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           rightWheel,    tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           carrierRight,  tmotorVex393_MC29, openLoop)
@@ -28,6 +32,7 @@
 //************************
 int leftMotorSpeed = 0;
 int rightMotorSpeed = 0;
+int distance = 0; //how far potentiometer is away from wall, is used in turn methods
 bool up = true;
 
 
@@ -55,6 +60,29 @@ void stopWheels(){
 	motor[leftWheel] = 0;
 	motor[rightWheel] = 0;
 }
+
+//turns robot 180 left
+void turnLeft(){
+	motor[leftWheel] = 60;
+	motor[rightWheel] = 60;
+	sleep(3200);
+	//while(distance < SensorValue[rightUltSensor]){
+		//distance = SensorValue[rightUltSensor];
+	//}
+	stopWheels();
+}
+
+//turns robot 180 right
+void turnRight(){
+	motor[leftWheel] = -60;
+	motor[rightWheel] = -60;
+	sleep(3200);
+	//while(distance < SensorValue[leftUltSensor]){
+	//	distance = SensorValue[leftUltSensor];
+	//}
+	stopWheels();
+}
+
 
 //***** CLAW *****
 
@@ -90,11 +118,68 @@ void moveArm(int speed) {
   motor[armRight] = -(speed+gravity);
 }
 
+//***** CARRIER *****
+
+//lifts the mobile goal
+void raiseCarrier()
+{
+	//gradually increase motor speed for about 2 seconds
+	for(int base = 1; base <= 10; base++)
+	{
+		motor[carrierLeft] = pow(base,2);
+		motor[carrierRight] = -pow(base,2);
+		sleep(186);
+	}
+	//stop carrier motors
+	motor[carrierLeft] = 0;
+	motor[carrierRight] = 0;
+}
+
+//lowers the mobile goal
+void lowerCarrier()
+{
+	//gradually increase motor speed for about 2 seconds
+	for(int base = 1; base <= 10; base++)
+	{
+		motor[carrierLeft] = -(pow(base,2));
+		motor[carrierRight] = (pow(base,2));
+		sleep(105);
+	}
+	//stop carrier motors
+	motor[carrierRight] = 0;
+	motor[carrierLeft] = 0;
+}
+
 //***** AUTONOMOUS *****
 
 void auto()
 {
-
+	//lower carrier
+	lowerCarrier();
+	//move forward until button sensor is pressed
+	moveWheels(75);
+	waitUntil(SensorValue[carrierBtn]==1);
+	stopWheels();
+	//raise carrier
+	raiseCarrier();
+	//move back for set amount of time
+	moveWheels(-75);
+	sleep(2550);
+	//stop
+	stopWheels();
+	//turn 180 degrees in the direction that is opposite of the wall
+	if(SensorValue[rightUltSensor] < SensorValue[leftUltSensor]){
+		turnLeft();
+	}
+	else{
+		turnRight();
+	}
+	//lower carrier and put mobile goal in 5 point zone
+	lowerCarrier();
+	//move back into colored square
+	moveWheels(-75);
+	sleep(3000);
+	stopWheels();
 }
 
 //***** DRIVING *****
@@ -163,37 +248,6 @@ void updateArm()
 	} else {
 		moveArm(0);
 	}
-}
-
-//lifts the mobile goal
-void raiseCarrier()
-{
-	//gradually increase motor speed for about 2 seconds
-	for(int base = 1; base <= 10; base++)
-	{
-		motor[carrierLeft] = pow(base,2);
-		motor[carrierRight] = -pow(base,2);
-		sleep(186);
-	}
-	//stop carrier motors
-	motor[carrierLeft] = 0;
-	motor[carrierRight] = 0;
-}
-
-
-//lowers the mobile goal
-void lowerCarrier()
-{
-	//gradually increase motor speed for about 2 seconds
-	for(int base = 1; base <= 10; base++)
-	{
-		motor[carrierLeft] = -(pow(base,2));
-		motor[carrierRight] = (pow(base,2));
-		sleep(105);
-	}
-	//stop carrier motors
-	motor[carrierRight] = 0;
-	motor[carrierLeft] = 0;
 }
 
 //raises or lowers the mobile goal carrier depnding if button 8D, 8R, or neither are pressed
