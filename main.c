@@ -65,9 +65,6 @@ void turnLeft(){
 	motor[leftWheel] = 60;
 	motor[rightWheel] = 60;
 	sleep(3200);
-	//while(distance < SensorValue[rightUltSensor]){
-		//distance = SensorValue[rightUltSensor];
-	//}
 	stopWheels();
 }
 
@@ -76,9 +73,6 @@ void turnRight(){
 	motor[leftWheel] = -60;
 	motor[rightWheel] = -60;
 	sleep(3200);
-	//while(distance < SensorValue[leftUltSensor]){
-	//	distance = SensorValue[leftUltSensor];
-	//}
 	stopWheels();
 }
 
