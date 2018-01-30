@@ -50,7 +50,7 @@ void stopWheels() {
 void turnLeft() {
 	motor[leftWheel] = 60;
 	motor[rightWheel] = 60;
-	sleep(3200);
+	sleep(3000);
 	stopWheels();
 }
 
@@ -58,7 +58,7 @@ void turnLeft() {
 void turnRight() {
 	motor[leftWheel] = -60;
 	motor[rightWheel] = -60;
-	sleep(3200);
+	sleep(3000);
 	stopWheels();
 }
 
