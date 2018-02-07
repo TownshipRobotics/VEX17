@@ -36,8 +36,8 @@ bool up = true;   // Whether the carrier is up or not
 				(+) => forwards
 				(-) => backwards      */
 void moveWheels(int wheelPower) {
-	motor[leftWheel] = wheelPower;
-	motor[rightWheel] = -wheelPower-1;
+	motor[leftWheel] = -wheelPower;
+	motor[rightWheel] = wheelPower-1;
 }
 
 /* Stops all wheel movement */
@@ -48,16 +48,16 @@ void stopWheels() {
 
 /* Turns 180 counterclockwise */
 void turnLeft() {
-	motor[leftWheel] = 60;
-	motor[rightWheel] = 60;
+	motor[leftWheel] = -60;
+	motor[rightWheel] = -60;
 	sleep(3000);
 	stopWheels();
 }
 
 /* Turns 180 clockwise */
 void turnRight() {
-	motor[leftWheel] = -60;
-	motor[rightWheel] = -60;
+	motor[leftWheel] = 60;
+	motor[rightWheel] = 60;
 	sleep(3000);
 	stopWheels();
 }
@@ -134,11 +134,11 @@ void auto() {
 	//stop
 	stopWheels();
 	//turn 180 degrees in the direction that is opposite of the wall
-	if(SensorValue[rightUltSensor] < SensorValue[leftUltSensor]){
+	//if(SensorValue[rightUltSensor] < SensorValue[leftUltSensor]){
 		turnLeft();
-	} else{
-		turnRight();
-	}
+	//} else{
+	//	turnRight();
+	//}
 	//lower carrier and put mobile goal in 5 point zone
 	lowerCarrier();
 	//move back into colored square
@@ -166,10 +166,16 @@ int modify(int input) {
 	return (input+(pow(input,5)/8192-pow(input,3))/8192)/3;
 }
 
+//it needed to be faster so i made a slight alteration
+//https://www.desmos.com/calculator/xv2hbpabjm
+int modify2(int input) {
+	return (input+(pow(input,5)/8192-pow(input,3))/8192)/2;
+}
+
 /* Update wheel powers based on controller */
 void updateWheels() {
-	motor[leftWheel] = modify(vexRT[Ch3]);
-	motor[rightWheel] = -modify(vexRT[Ch2]);
+	motor[leftWheel] = -modify2(vexRT[Ch3]);
+	motor[rightWheel] = modify2(vexRT[Ch2]);
 }
 
 /* Update claw power based on controller */
