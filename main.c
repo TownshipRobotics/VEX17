@@ -37,7 +37,7 @@ bool up = true;   // Whether the carrier is up or not
 				(-) => backwards      */
 void moveWheels(int wheelPower) {
 	motor[leftWheel] = -wheelPower;
-	motor[rightWheel] = wheelPower-1;
+	motor[rightWheel] = wheelPower;	//-1;
 }
 
 /* Stops all wheel movement */
@@ -48,8 +48,8 @@ void stopWheels() {
 
 /* Turns 180 counterclockwise */
 void turnLeft() {
-	motor[leftWheel] = -60;
-	motor[rightWheel] = -60;
+	motor[leftWheel] = -70;
+	motor[rightWheel] = -70;
 	sleep(3000);
 	stopWheels();
 }
@@ -123,7 +123,7 @@ void auto() {
 	//lower carrier
 	lowerCarrier();
 	//move forward until button sensor is pressed
-	moveWheels(75);
+	moveWheels(80);
 	waitUntil(SensorValue[carrierBtn]==1);
 	stopWheels();
 	//raise carrier
