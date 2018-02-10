@@ -23,7 +23,7 @@
 //       VARIABLES
 //************************
 bool up = true;   // Whether the carrier is up or not
-
+//float timeForward = 0;	// how much time it took to reach mobile goal and remove if you do not use timer
 
 //*************************
 //         METHODS
@@ -50,7 +50,7 @@ void stopWheels() {
 void turnLeft() {
 	motor[leftWheel] = -70;
 	motor[rightWheel] = -70;
-	sleep(3000);
+	sleep(4500);
 	stopWheels();
 }
 
@@ -123,14 +123,17 @@ void auto() {
 	//lower carrier
 	lowerCarrier();
 	//move forward until button sensor is pressed
+	//clearTimer(T1);	//remove if you do not use timer
 	moveWheels(80);
 	waitUntil(SensorValue[carrierBtn]==1);
+	//timeForward = time100[T1];	//remove if you do not use timer
 	stopWheels();
 	//raise carrier
 	raiseCarrier();
 	//move back for set amount of time
 	moveWheels(-75);
-	sleep(2550);
+	sleep(2400);	//uncomment if you do not use timer
+	//sleep(timeForward);	//remove if you do not use timer
 	//stop
 	stopWheels();
 	//turn 180 degrees in the direction that is opposite of the wall
