@@ -37,7 +37,7 @@ bool up = true;   // Whether the carrier is up or not
 				(-) => backwards      */
 void moveWheels(int wheelPower) {
 	motor[leftWheel] = -wheelPower;
-	motor[rightWheel] = wheelPower;	//-1;
+	motor[rightWheel] = wheelPower-1; //dont change! made so robot does not curve
 }
 
 /* Stops all wheel movement */
@@ -48,9 +48,9 @@ void stopWheels() {
 
 /* Turns 180 counterclockwise */
 void turnLeft() {
-	motor[leftWheel] = -70;
-	motor[rightWheel] = -70;
-	sleep(4500);
+	motor[leftWheel] = -60;
+	motor[rightWheel] = -60;
+	sleep(2750);
 	stopWheels();
 }
 
@@ -58,7 +58,7 @@ void turnLeft() {
 void turnRight() {
 	motor[leftWheel] = 60;
 	motor[rightWheel] = 60;
-	sleep(3000);
+	sleep(2750);
 	stopWheels();
 }
 
@@ -84,6 +84,11 @@ void moveArm(int speed) {
 	motor[armRight] = -(speed+gravity);
 }
 
+//supposed to stop the arm from moving, but doesn't quite work yet. Will be tweaked soon
+void stopArm(){
+	motor[armLeft] = 0;
+	motor[armRight] = 0;
+}
 
 //***** CARRIER *****
 
@@ -122,6 +127,10 @@ void lowerCarrier() {
 void auto() {
 	//lower carrier
 	lowerCarrier();
+	//raises arm out of the robot's way while doing autonomous
+	moveArm(-20);
+	sleep(100);
+	stopArm();
 	//move forward until button sensor is pressed
 	//clearTimer(T1);	//remove if you do not use timer
 	moveWheels(80);
@@ -132,22 +141,47 @@ void auto() {
 	raiseCarrier();
 	//move back for set amount of time
 	moveWheels(-75);
-	sleep(2400);	//uncomment if you do not use timer
+	sleep(2000);	//uncomment if you do not use timer, old number was 2400 then 2200
 	//sleep(timeForward);	//remove if you do not use timer
 	//stop
 	stopWheels();
 	//turn 180 degrees in the direction that is opposite of the wall
-	//if(SensorValue[rightUltSensor] < SensorValue[leftUltSensor]){
-		turnLeft();
-	//} else{
+	//if(SensorValue[leftUltSensor] < 10){
 	//	turnRight();
+	//} else{
+		turnLeft();
 	//}
+	//move forward slightly to place mobile goal in 5-point zone
+	moveWheels(60);
+	sleep(1500);
+	stopWheels();
 	//lower carrier and put mobile goal in 5 point zone
 	lowerCarrier();
 	//move back into colored square
 	moveWheels(-75);
-	sleep(3000);
+	sleep(2500);
 	stopWheels();
+}
+
+//parking bonus only autonomous section, not necessary anymore since auto is working enough
+void auto2(){
+	//lower carrier
+	lowerCarrier();
+	moveArm(20);
+	sleep(100);
+	stopArm();
+	//move forward until button sensor is pressed
+	//clearTimer(T1);	//remove if you do not use timer
+	moveWheels(80);
+	waitUntil(SensorValue[carrierBtn]==1);
+	//timeForward = time100[T1];	//remove if you do not use timer
+	stopWheels();
+	//raise carrier
+	raiseCarrier();
+	moveWheels(40);
+	sleep(100);
+	stopWheels();
+	lowerCarrier();
 }
 
 
